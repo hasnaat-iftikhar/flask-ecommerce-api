@@ -1,21 +1,18 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-from dotenv import load_dotenv
-import os
+from app import create_app, db
+from app.models import User, Product, Order, OrderItem, CartItem
 
-load_dotenv()
+app = create_app()
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
-db = SQLAlchemy(app)
-
-# Test connection
-@app.route('/')
-def index():
-    try:
-        return "Database connected successfully!"
-    except Exception as e:
-        return f"Error: {str(e)}"
+@app.shell_context_processor
+def make_shell_context():
+    return {
+        'db': db,
+        'User': User,
+        'Product': Product,
+        'Order': Order,
+        'OrderItem': OrderItem,
+        'CartItem': CartItem
+    }
 
 if __name__ == "__main__":
     app.run(debug=True)
