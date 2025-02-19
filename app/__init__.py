@@ -7,11 +7,11 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object("app.core.config.Config")
+    app.config.from_object("app.config.Config")
     
     # initializing application with dependencies
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
     
     # authentication
     from app.routes.auth import auth_bp
