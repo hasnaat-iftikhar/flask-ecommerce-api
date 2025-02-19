@@ -7,9 +7,12 @@ class UserRepository:
         return User.query.filter_by(email=email).first()
         
     @staticmethod
-    def create(email, password):
-        user = User(email=email, password=password)
+    def create(email, password_hash):
+        user = User(email=email, password_hash=password_hash)
         db.session.add(user)
         db.session.commit()
+
+        print("user: ", user)
+        
         return user
         

@@ -1,11 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from app.controllers.auth_controller import register_user, login_user
+import logging
 
 auth_bp = Blueprint("auth", __name__)
+logger = logging.getLogger(__name__)
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
-    data = request.get_json()
+    data = request.get_json()    
     return register_user(data)
 
 @auth_bp.route("/login", methods=["POST"])
