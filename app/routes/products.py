@@ -1,19 +1,25 @@
-from flask import Blueprint, request, jsonify
-from app.controllers.product_controller import create_product, get_products, search_products
+from flask import Blueprint, request
+from app.controllers.product_controller import (
+    create_product, get_products, search_products, update_product, delete_product
+)
 
 products_bp = Blueprint("products", __name__)
 
 @products_bp.route("", methods=["POST"])
 def create():
-    if request.content_type != "application/json":
-        return jsonify({"error": "Unsupported Media Type: Must be JSON"}), 415
-
-    data = request.get_json()
-    return create_product(data)
+    return create_product(request.get_json())
 
 @products_bp.route("", methods=["GET"])
 def get_all():
     return get_products()
+
+@products_bp.route("/<int:id>", methods=["PUT"])
+def update(id):
+    return update_product(id, request.get_json())
+
+@products_bp.route("/<int:id>", methods=["DELETE"])
+def delete(id):
+    return delete_product(id)
 
 @products_bp.route("/search", methods=["GET"])
 def search():
